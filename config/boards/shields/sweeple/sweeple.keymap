@@ -8,17 +8,25 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/outputs.h>
-#include "keymap_italian.h"
+#include "keymap_danish_windows.h"
+#include "keymap_danish_mac.h"
 
 // Layer definitions
-#define BASE 0
-#define SYM 1
-#define EXT 2
-#define FNC 3
-#define SYM2 4
-#define ACCENT 5
-#define SETTINGS 6
+#define WIN_BASE 0
+#define W_EXT 1
+#define W_SYM 2
+#define W_FNC 3
+#define W_SYM2 4
 // -----------------
+#define MAC_BASE 5
+#define M_EXT 6
+#define M_SYM 7
+#define M_FNC 8
+#define M_SYM2 9
+// -----------------
+#define GAMING 10
+#define GAMING_NUMBERS 11
+#define SETTINGS 12
 
 &sk {
 	// don't release mods on other mods presses
@@ -51,21 +59,49 @@
 			#binding-cells = <0>;
 			bindings = <&kp LSHIFT &kp RSHIFT &kp LCTRL &kp RCTRL &kp LALT &kp RALT &kp LGUI &kp RGUI>;
 		};
+		tilde: tilde {
+            label = "macro_tilde";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp RA(RBKT) &kp RA(RBKT)>;
+        };
+        btick: btick {
+            label = "macro_btick";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp DK_ACUT &kp DK_ACUT>;
+        };
+        hat: hat {
+            label = "macro_hat";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp RBRC>;
+        };
+		win_degree: win_degree {
+            label = "macro_win_degree";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings
+			= <&macro_press   &kp LALT>
+			, <&macro_tap     &kp KP_N2 &kp KP_N4 &kp KP_N8>
+			, <&macro_release &kp LALT>
+			;
+        };
+		mac_degree: mac_degree {
+            label = "macro_mac_degree";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp RA(Q)>;
+        };
 	};
 
 	combos {
 		compatible = "zmk,combos";
-		// both right thumb keys
-		combo_accent {
-			timeout-ms = <200>;
-			key-positions = <32 33>;
-			bindings = <&mo ACCENT>;
-		};
 		// internal-left & external-right thumb keys
 		combo_sym2 {
 			timeout-ms = <200>;
 			key-positions = <31 33>;
-			bindings = <&mo SYM2>;
+			bindings = <&mo W_SYM2>;
 		};
 		// both left thumb keys
 		combo_settings {
@@ -73,93 +109,266 @@
 			key-positions = <30 31>;
 			bindings = <&mo SETTINGS>;
 		};
-		// left index & middle fingers (home-row)
-		// hold control & space for Adobe workflow
-		combo_ctrl_space {
-			timeout-ms = <200>;
-			key-positions = <12 13>;
-			bindings = <&kp LC(SPACE)>;
-			layers = <BASE>;
-		};
 	};
 
 	keymap {
 		compatible = "zmk,keymap";
-		// Base alpha layer
-		default_layer {
-			label = "Base";
-			bindings = <
-			&kp Q &kp W &kp E &kp R &kp T           &kp Y &kp U  &kp I     &kp O   &kp P 
-			&kp A &kp S &kp D &kp F &kp G           &kp H &kp J  &kp K     &kp L &kp IT_OGRV
-			&kp Z &kp X &kp C &kp V &kp B           &kp N &kp M  &kp COMMA &kp DOT &kp IT_UGRV
-							&mo EXT &qt LSHIFT SPACE           &kp SPACE &sl SYM
-			>;
-		};
 
-		// Numbers and high frequency symbols
-		sym_layer {
-			label = "Sym.";
+
+		//---------------------------------------------------------------------------------------------------------------------------------------------------
+		//	Windows layers
+		//---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+		// Base windows alpha layer
+		default_layer {
+			label = "WinBase";
 			bindings = <
-			&kp N1 &kp N2 &kp N3 &kp N4 &kp N5		                                    &kp N6 &kp N7 &kp N8 &kp N9 &kp N0
-			&kp IT_LESS &kp IT_USD &kp IT_LPAR &kp IT_LBRC &kp IT_LBKT  &kp IT_EQL &kp IT_QUES &kp IT_SQUOT &kp IT_MINUS &kp IT_AST
-			&kp IT_GREAT &kp IT_PERC &kp IT_RPAR &kp IT_RBRC &kp IT_RBKT 	&kp IT_AT &kp IT_EXCL &kp IT_DQUOT &kp IT_PLUS &kp IT_FSLH
-														&mo FNC  &mo SYM2       &trans &trans
+		//╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+            &kp Q      &kp W      &kp E      &kp R      &kp T          &kp Y      &kp U      &kp I      &kp O      &kp P 
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+            &kp A      &kp S      &kp D      &kp F      &kp G          &kp H      &kp J      &kp K      &kp L      &kp DK_AA
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+            &kp Z      &kp X      &kp C      &kp V      &kp B          &kp N      &kp M      &kp COMMA  &kp DK_AE  &kp DK_OE
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+                                        &mo W_EXT  &qt LSHIFT SPACE   &kp SPACE  &sl W_SYM
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
 			>;
 		};
 
 		// Main modifiers and arrow keys
-		ext_layer {
-			label = "Mods";
+		w_ext_layer {
+			label = "WinMods";
 			bindings = <
-			&kp ESC  &kp C_PREV &kp C_PP  &kp C_NEXT  &kp C_PAUSE    	&kp PG_UP  &kp HOME &kp UP &kp END &kp CAPS
-			&sk LALT &sk LGUI  &sk LSHIFT  &sk LCTRL  &kp RALT 			&kp PG_DN &kp LEFT  &kp DOWN  &kp RIGHT   &kp DEL
-			&kp LC(Z)  &kp LC(X) &kp LC(C) &kp TAB   &kp LC(V)          &kp LC(BSPC) &kp BSPC &trans &trans  &trans
-																		&trans &kp LCTRL    &kp ENTER  &mo FNC 
+		//╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│  ESC     │  C_PREV  │  C_PP    │  C_NEXT  │Mute Teams│   │  VOL_UP   │  HOME    │  UP      │  END     │  CAPS    │
+            &kp ESC  &kp C_PREV  &kp C_PP  &kp C_NEXT  &kp LC(LS(M)) &kp C_VOL_UP  &kp HOME   &kp UP     &kp END    &kp CAPS
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│  LALT    │ L Win    │  LSHIFT  │  LCTRL   │  RALT    │   │  VOL_DN   │  LEFT    │  DOWN    │  RIGHT   │  DEL     │
+            &sk LALT  &sk LGUI  &sk LSHIFT  &sk LCTRL  &kp RALT 	  &kp C_VOL_DN   &kp LEFT   &kp DOWN  &kp RIGHT   &kp DEL
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│   *Z     │   *X     │  *C      │  TAB     │   *V     │   │   *BSPC  │  BSPC    │Desk Left │Desk right│          │
+            &kp LC(Z)  &kp LC(X)  &kp LC(C)  &kp TAB    &kp LC(V)    &kp LC(BSPC) &kp BSPC &kp LC(LG(LEFT)) &kp LC(LG(RIGHT)) &trans
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+                                             &trans     &kp LCTRL     &kp ENTER   &mo W_FNC
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+			>;
+		};
+
+		// Numbers and high frequency symbols
+		w_sym_layer {
+			label = "WinSym";
+			bindings = <
+		//╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│  1       │  2       │  3       │  4       │  5       │   │  6       │  7       │  8       │  9       │  0       │
+            &kp N1     &kp N2     &kp N3     &kp N4     &kp N5         &kp N6     &kp N7     &kp N8     &kp N9     &kp N0
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│   '      │  <       │  (       │  {       │  [       │   │  =       │   *      │  &       │          │          │
+           &kp DK_QUOT &kp DK_LABK &kp DK_LPRN &kp DK_LCBR &kp DK_LBRC   &kp DK_EQL &kp DK_ASTR &kp CARET &kp DK_PLUS  &trans
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│   %      │   ;      │  #       │  /       │   -      │   │  @       │   ?      │  .       │  ~       │          │
+           &kp DK_PERC &kp DK_SCLN &kp DK_HASH &kp DK_SLSH &kp DK_MINS  &kp DK_AT  &kp DK_QUES &kp DOT  &kp DK_TILD  &trans
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+                                            &mo W_FNC  &mo W_SYM2       &trans     &trans
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
 			>;
 		};
 
 		// Function keys with modifiers
-		fnc_layer {
-			label = "FRow";
+		w_fnc_layer {
+			label = "WinFRow";
 			bindings = <
-			&kp F1 &kp F2 &kp F3 &kp F4 &kp F5                  &kp F6 &kp F7 &kp F8 &kp F9 &kp F10 
-			&sk LALT &sk LGUI &sk LSHIFT &sk LCTRL &kp RALT     &kp F11 &kp F12  &kp PRINTSCREEN &trans &trans
-			&none &none &none &none &none				          &none &none &none &none &none 
-							  &none &none              &none &none  
+		//╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│  F1      │  F2      │  F3      │  F4      │  F5      │   │  F6      │  F7      │  F8      │  F8      │  F10     │
+            &kp F1     &kp F2     &kp F3     &kp F4     &kp F5         &kp F6     &kp F7     &kp F8     &kp F9     &kp F10
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│   "      │  >       │  )       │  }       │  ]       │   │  F11     │  F12     │          │          │          │
+          &kp DK_DQUO &kp DK_RABK &kp DK_RPRN &kp DK_RCBR &kp DK_RBRC  &kp F11    &kp F12 &kp PRINTSCREEN  &trans   &trans
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │  :       │  |       │  \       │   _      │   │   @      │  !       │  .       │  ~       │          │
+            &trans &kp DK_COLN &kp DK_PIPE &kp DK_BSLS &kp DK_UNDS   &kp DK_AT  &kp DK_EXLM &kp DOT  &kp DK_TILD  &trans
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+                                             &trans     &kp LCTRL      &kp ENTER  &mo W_FNC 
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
 			>;
 		};
 
 		// Low frequency symbols.
-		symbols_2_layer {
-			label = "Sym.2";
+		w_symbols_2_layer {
+			label = "WinSym2";
 			bindings = <
-			&kp IT_CARET &kp IT_UNDER &kp IT_PND &kp IT_EUR &kp IT_HASH         &none &none &none &none &none 
-			&kp IT_BKTK &kp IT_TILDE &kp IT_BSLH &kp IT_PIPE &kp IT_AND         &none &none &none &none &none
-			&none 			&none 			 &kp IT_SECT &kp IT_CCED &kp IT_DEG				  &none &none &none &none &none
-																	&none &none        	&none &none 
+		//╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &none 		&none 	   &none 	  &none      &none	        &none      &none 	  &none 	 &none 		&none 
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│  ^       │   $      │   £      │   €      │   °      │   │          │          │          │          │          │
+            &hat 	 &kp DK_DLR  &kp DK_PND   &kp DK_EURO &win_degree	    &none      &none 	  &none 	 &none 		&none 
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &none 		&none 	   &none 	  &none      &none	        &none      &none 	  &none 	 &none 		&none 
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+                                              &none 	 &none			&none 	   &none 
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
 			>;
 		};
 
-		// Used to type regional accents.
-		accent_layer {
-			label = "Accent";
+
+		//---------------------------------------------------------------------------------------------------------------------------------------------------
+		//	Mac Layers
+		//---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+		// Base mac aplha layer
+		mac_base_layer {
+			label = "Mac Base";
 			bindings = <
-			&none &none &none &kp IT_CEGR &none                         &none &none &none &none &none 
-			&kp IT_AGRV &kp IT_IGRV &kp IT_OGRV &kp IT_EGRV &kp IT_EACU &none &none &none &none &none
-			&none &none &none &kp IT_UGRV &none                         &none &none &none &none &none
-									&none &none                         &none &none 
+		//╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+            &kp Q      &kp W      &kp E      &kp R      &kp T          &kp Y      &kp U      &kp I      &kp O      &kp P 
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+            &kp A      &kp S      &kp D      &kp F      &kp G          &kp H      &kp J      &kp K      &kp L      &kp DK_AA
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+            &kp Z      &kp X      &kp C      &kp V      &kp B          &kp N      &kp M      &kp COMMA  &kp DK_AE  &kp DK_OE
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+                                        &lt M_EXT ESC  &qt LSHIFT SPACE   &kp SPACE  &sl M_SYM 
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
 			>;
+		};
+
+		// Main modifiers and arrow keys
+		m_ext_layer {
+			label = "M Mods";
+			bindings = <
+		//╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│  ESC     │  C_PREV  │  C_PP    │  C_NEXT  │Mute Teams│   │  VOL_UP   │  HOME    │  UP      │  END     │  CAPS    │
+            &kp ESC  &kp C_PREV  &kp C_PP  &kp C_NEXT  &kp LG(LS(M)) &kp C_VOL_UP  &kp HOME   &kp UP     &kp END    &kp CAPS
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│  LALT    │ L Win    │  LSHIFT  │  LCTRL   │  RALT    │   │  VOL_DN   │  LEFT    │  DOWN    │  RIGHT   │  DEL     │
+            &sk LALT  &sk LGUI  &sk LSHIFT  &sk LCTRL  &kp RALT 	  &kp C_VOL_DN   &kp LEFT   &kp DOWN  &kp RIGHT   &kp DEL
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│   *Z     │   *X     │  *C      │  TAB     │   *V     │   │   *BSPC  │  BSPC    │Desk Left │Desk right│          │
+            &kp LG(Z) &kp LG(X)  &kp LG(C)   &kp TAB   &kp LG(V)     &kp LA(BSPC) &kp BSPC &kp LC(LEFT) &kp LC(RIGHT) &trans
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+                                             &trans     &kp LCTRL     &kp ENTER   &mo M_FNC 
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+			>;
+		};
+
+		// Numbers and high frequency symbols
+		m_sym_layer {
+			label = "M Sym";
+			bindings = <
+		//╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│  1       │  2       │  3       │  4       │  5       │   │  6       │  7       │  8       │  9       │  0       │
+            &kp N1     &kp N2     &kp N3     &kp N4     &kp N5         &kp N6     &kp N7     &kp N8     &kp N9     &kp N0
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│  '       │  <       │  (       │  {       │  [       │   │  =       │  *       │  &       │          │          │
+           &kp DK_QUOT  &kp DK_LABK &kp DK_LPRN &kp DK_MAC_LCBR &kp DK_LBRC &kp DK_EQL &kp DK_ASTR &kp CARET &kp DK_PLUS    &trans
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │   ;      │  #       │  /       │   -      │   │  @       │  ?       │  .       │  ~       │          │
+            &trans   &kp DK_SCLN &kp DK_HASH &kp DK_SLSH &kp DK_MINS  &kp DK_MAC_AT  &kp DK_QUES &kp DOT  &kp DK_TILD  &trans
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+                                            &mo M_FNC  &mo M_SYM2       &trans     &trans
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+			>;
+		};
+
+		// Function keys with modifiers
+		m_fnc_layer {
+			label = "M FRow";
+			bindings = <
+		//╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│  F1      │  F2      │  F3      │  F4      │  F5      │   │  F6      │  F7      │  F8      │  F8      │  F10     │
+            &kp F1     &kp F2     &kp F3     &kp F4     &kp F5         &kp F6     &kp F7     &kp F8     &kp F9     &kp F10
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│   "      │  >       │  )       │  }       │  ]       │   │  F11     │  F12     │          │          │          │
+        &kp DK_DQUO &kp DK_RABK &kp DK_RPRN &kp DK_MAC_RCBR &kp DK_RBRC  &kp F11  &kp F12 &kp PRINTSCREEN  &trans   &trans
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │  :       │  |       │  \       │   _      │   │   @      │  !       │  .       │  ~       │          │
+         &trans &kp DK_COLN &kp DK_MAC_PIPE &kp DK_MAC_BSLS &kp DK_UNDS &kp DK_MAC_AT &kp DK_EXLM &kp DOT  &kp DK_TILD  &trans
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+                                             &trans     &kp LCTRL      &kp ENTER  &mo M_FNC 
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+			>;
+		};
+
+		// Low frequency symbols.
+		m_symbols_2_layer {
+			label = "M Sym2";
+			bindings = <
+		//╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &none 		&none 	   &none 	  &none      &none	        &none      &none 	  &none 	 &none 		&none 
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│  ^       │   $      │   £      │   €      │   °      │   │          │          │          │          │          │
+            &none &kp DK_MAC_DLR &kp DK_MAC_PND &kp DK_MAC_EURO &mac_degree	&none      &none 	  &none 	 &none 		&none 
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &none 		&none 	   &none 	  &none      &none	        &none      &none 	  &none 	 &none 		&none 
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+                                              &none 	 &none			&none 	   &none 
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+			>;
+		};
+
+
+		//---------------------------------------------------------------------------------------------------------------------------------------------------
+		//	Common layers
+		//---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+        // Used in games with better positioning of asdw.
+		gaming_layer {
+				label = "gaming";
+				bindings = <
+
+		//╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+            &kp ESC     &kp Q      &kp W      &kp E      &kp R          &kp T      &kp Y      &kp U      &kp I      &kp O
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+            &kp TAB     &kp A      &kp S      &kp D      &kp F          &kp G      &kp H      &kp J      &kp K      &kp L
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+            &kp LALT    &kp Z      &kp X      &kp C      &kp V          &kp B      &kp N      &kp M      &kp COMMA  &kp DK_AE
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+                                            &kp LSHIFT	&kp LCTRL      &kp SPACE &mo GAMING_NUMBERS 
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+				>;
+		};
+
+        // Used in games to access numbers
+		gaming_numbers_layer {
+				label = "gaming#";
+				bindings = <
+
+		//╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+              &none     &kp N1     &kp N2     &kp N3     &none          &none      &none      &none      &none      &none
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+              &none     &kp N4     &kp N5     &kp N6     &none          &none      &none      &none      &none      &none
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+              &none     &kp N7     &kp N8     &kp N9     &none          &none      &none      &none      &none      &none
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+                                              &kp N0 	 &none          &none      &none 
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+				>;
 		};
 
 		// Used to change the keyboard's settings.
 		settings_layer {
-				label = "Sett.";
+				label = "Settings";
 				bindings = <
-				&bootloader &none &none &bt BT_CLR &bt BT_SEL 0               &bt BT_SEL 3 &none &unstick &none &bootloader 
-				&none &none &none &none      &bt BT_SEL 1 						  &bt BT_SEL 4 &none &none &none &none
-				&none &none &none &none      &bt BT_SEL 2               &bt BT_SEL 5 &none &none &none &none
-										&none &none                         &none &none 
+
+		//╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│bootloader│          │          │ BT_CLR   │ BT_SEL 0 │   │ BT_SEL 3 │          │ Unstick  │          │bootloader│          
+           &bootloader  &none      &none   &bt BT_CLR &bt BT_SEL 0   &bt BT_SEL 3  &none     &unstick    &none    &bootloader
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │          │          │          │ BT_SEL 1 │   │ BT_SEL 4 │          │          │          │          │
+            &none 		&none 	   &none 	  &none   &bt BT_SEL 1	 &bt BT_SEL 4  &none 	  &none 	 &none 		&none 
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │          │          │          │ BT_SEL 2 │   │ BT_SEL 5 │          │          │          │          │
+             &none 		&none 	   &none 	  &none   &bt BT_SEL 2	 &bt BT_SEL 5  &none 	  &none 	 &none 		&to GAMING
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+                                              &none 	 &none		 &to WIN_BASE &to MAC_BASE 
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
 				>;
 		};
+
 	};
 };
